@@ -1,0 +1,57 @@
+<html>
+<head>
+    <title>Upload Image</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+</head>
+<body>
+<div class="container">
+
+    <form id="images-form" method="post" action="/images" enctype="multipart/form-data">
+
+        <input name="image" type="file" required>
+
+        <input type="submit" value="上传">
+
+    </form>
+
+    <div id="image-links"></div>
+
+</div>
+
+<script type="application/javascript">
+
+  var createLink = function (link, text) {
+    return $('<div>' +
+      '<a href=" ' + link + ' " target="_blank"> ' + text + ' </a>' +
+      '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+      '<span>' + link + '</span>' +
+      '</div>'
+    );
+  };
+
+  var renderImageLinks = function (links) {
+    const $container = $('#image-links');
+
+    for (var key in links) {
+      var link = createLink(links[key], key);
+      $container.append(link);
+    }
+  };
+
+  $(document).ready(function () {
+
+    $('#images-form').on('submit', function (e) {
+      e.preventDefault();
+
+      $(this).ajaxSubmit({
+        success: function (x) {
+          console.log('res', x);
+          renderImageLinks(x);
+        }
+      })
+    });
+  });
+</script>
+</body>
+</html>
